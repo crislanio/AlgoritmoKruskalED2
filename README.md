@@ -11,15 +11,6 @@ FILES IN THE REPOSITORY:
 
 PROJECT DESCRIPTION:
 
-Project1 - Merge sort implemented in 3 different ways. Run 'mxm135730DriverProgram' which prints the running time of the 3 merge sort functions in milli seconds for the given input
-Project2 - Permutation and Combination
-Project4 and 5 - All Arithmetic Operations on very very large numbers using LinkedList
-Project6 - eCommerce website implemented using Trees and Hash
-Project7 - Minium Spanning Tree in Graphs
-Project8PartA - MST algorithms in Graph (Prims and Kruskal algorithms)
-Project9Basic - Maximum Matching in Bipartite Graphs
-Project9PartA - Maximum Matching in General Graphs
 Project10 - (toughest project) Christofides algorithm, Travelling Saleman Problem, Kruskal Algorithm, Minimum weight perfect matching
-Sort - contains MergeSort(3 ways) and QuickSort(2 ways of implementation)
 UndirectedGraph - implementation of undirected graph
 

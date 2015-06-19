@@ -1,3 +1,0 @@
-This folder doesn't belong to any project given by my Professor.
-
-This package just contains my own implementation of Undirected Graphs.
