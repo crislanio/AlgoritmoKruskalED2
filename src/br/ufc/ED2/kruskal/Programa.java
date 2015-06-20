@@ -4,13 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-
-/**
- * 
- * @author 
- * Driver Program to run the Project
- *
- */
 public class Programa {
 
 	/**
@@ -23,19 +16,23 @@ public class Programa {
 		FuncoesExtras of = new FuncoesExtras();
 
 		/**
-		 * Read the input from the file
+		 * Ler a entrada do arquivo
 		 */
+
+//		BufferedReader br = new BufferedReader(new FileReader("Ex1.txt"));
+		
+//		BufferedReader br = new BufferedReader(new FileReader("Ex2.txt"));
+		
 		BufferedReader br = new BufferedReader(new FileReader("Ex3.txt"));
 		
-		String line = null;
-		of.parseFirstLineInput(br.readLine());		// read the first line to set the no of nodes, edges and root node
-		while( (line = br.readLine()) != null)
-			of.addToGraph(line);
+		
+		String linha = null;
+		of.analisarEntradaPrimeiraLinha(br.readLine());		// ler a primeira linha para definir a no de nós, arestas e nó raiz
+		while( (linha = br.readLine()) != null)
+			of.addAOGrafo(linha);
 		br.close();
 
-		of.ExecutionFunction();
-
-		//		of.MaximumWeightedMatching();
+		of.ExecFunc();
 
 	}
 

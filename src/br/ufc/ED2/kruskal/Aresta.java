@@ -39,7 +39,7 @@ public class Aresta {
 	 * @param aresta
 	 * @return
 	 */
-	public No getOtherEnd(No no) {
+	public No getOutroFim(No no) {
 		if(a.equals(no))
 			return b;
 		else if(b.equals(no))
@@ -54,38 +54,5 @@ public class Aresta {
 	public String toString() {
 		return "("+ (int)originalA.L + "," + (int)originalB.L + ")=" + peso + " or ("+originalA.id+","+originalB.id+")";
 	}
-
-	public void UpdateEdge(No noP, No no) {
-		if(a.equals(no))
-			a = noP;
-		else if(b.equals(no))
-			b = noP;
-	}
-
-	/**
-	 * Diz se esta aresta têm peso zero  ou não
-	 * @return
-	 */
-	public boolean isZeroEdge() {
-		if(originalA.L + originalB.L == (double) peso)
-			return true;
-		return false;
-	}
-
-	/**
-	 * Returna o nó original que tinha a primeira incidência
-	 * @param noParaExpandir
-	 * @return
-	 */
-	public No getOriginalNode(No noParaExpandir) {
-		if(a.equals(noParaExpandir))
-			return originalA;
-		return originalB;
-	}
-
-	public void UpdateOriginalValue() {
-		a = originalA;
-		b = originalB;
-	}
-
+	
 }

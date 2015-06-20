@@ -15,13 +15,6 @@ public class Grafo {
 
 	public List<Aresta> mstArvArestasList;
 
-	public Long matchingSize;
-
-	public List<Aresta> zeroGrafoAres;
-	public List<No> zeroGrafoNodos;
-
-	public List<Aresta> destaqueDentroArestas;
-
 	public Grafo() {
 		nodosList = new LinkedList<No>();
 		arestasList = new LinkedList<Aresta>();
@@ -29,10 +22,7 @@ public class Grafo {
 		noDosNodos = 0;
 		noDasArestas = 0;
 		mstArvArestasList = new LinkedList<Aresta>();
-		matchingSize = 0L;
-		zeroGrafoAres = new LinkedList<Aresta>();
-		zeroGrafoNodos = new LinkedList<No>();
-		destaqueDentroArestas = new LinkedList<Aresta>();
+
 	}
 
 	/**
@@ -41,7 +31,8 @@ public class Grafo {
 	 * @param no2
 	 * @param peso
 	 */
-	public void addNodeAndEdge(No no1, No no2, Integer peso) {
+	
+	public void addNoEAresta(No no1, No no2, Integer peso) {
 
 		if(nodosHashMap.containsKey(no1.id)) {
 			no1 = nodosHashMap.get(no1.id);
@@ -59,8 +50,8 @@ public class Grafo {
 
 		Aresta aresta = new Aresta(no1, no2, peso);
 		arestasList.add(aresta);		// add a aresta na lista
-		no1.addAdjNode(aresta);		// add a lista da matriz de adjacencia no no1
-		no2.addAdjNode(aresta);		// adicionar a matriz de lista de adjacência para no2
+		no1.addNoAdj(aresta);		// add a lista da matriz de adjacencia no no1
+		no2.addNoAdj(aresta);		// adicionar a matriz de lista de adjacência para no2
 	}
 
 	public void RotViavel() {
@@ -68,81 +59,32 @@ public class Grafo {
 			no.L = 0.0;
 		double max;
 		for(int i=1;i<=2;i++) {
-			for(No node : nodosList) {
+			for(No no : nodosList) {
 				max = 0;
-				for(Aresta aresta : node.listaArestasAdj) {
-					if(max <= ((double) aresta.peso - aresta.getOtherEnd(node).L))
-						max = (double) aresta.peso - aresta.getOtherEnd(node).L;
+				for(Aresta aresta : no.listaArestasAdj) {
+					if(max <= ((double) aresta.peso - aresta.getOutroFim(no).L))
+						max = (double) aresta.peso - aresta.getOutroFim(no).L;
 				}
 
-				node.L = max;
+				no.L = max;
 			}
 		}
-	//	Imprimir.PrintL(this);
 	}
-
-	public void ComputeZeroGraph(int countNo) {	// tem que ser computado em originalA e originalB em cada node
-
-		/**
-		 * 1) Keep the zero graph edges between nodes inside the same blossom for blossom expansion
-		 * 2) Clear ZGNodes and ZGEdges list
-		 * 3) Recompute ZG again for edges between nodes with blossom parent as itself
-		 */
-		for(Aresta aresta : zeroGrafoAres)		// Add arestas entre nodos dentro do dest para permanecer na lista
-			if(mesmoDest(aresta) && !destaqueDentroArestas.contains(aresta))	// Ineficiente !@
-				destaqueDentroArestas.add(aresta);
-
-		zeroGrafoAres.clear();
-		zeroGrafoNodos.clear();
-		for(Aresta edge : arestasList) {
-			if(!mesmoDest(edge) && (edge.originalA.L + edge.originalB.L) == (double) edge.peso )
-			{
-				zeroGrafoAres.add(edge);
-
-				edge.originalA.zeroAdjArestas.add(edge);	// Lista de atualização zeroAdjEdges em cada extremidade do nó
-				edge.originalB.zeroAdjArestas.add(edge);
-
-				if(!edge.a.equals(edge.originalA))	// lista de atualização zeroAdjEdges em dest nó também
-					edge.a.zeroAdjArestas.add(edge);
-				if(!edge.b.equals(edge.originalB))
-					edge.b.zeroAdjArestas.add(edge);
-
-				if(!zeroGrafoNodos.contains(edge.a))	// add nodos dest no zeroGraphNodes
-					zeroGrafoNodos.add(edge.a);
-				if(!zeroGrafoNodos.contains(edge.b))
-					zeroGrafoNodos.add(edge.b);
-			}
-		}
-
-	//	Imprimir.PrintZeG(this);
-	}
-
-	/**
-	 * if 2 nodos sao  o mesmo dest
-	 * @param aresta
-	 * @return
-	 */
-	private boolean mesmoDest(Aresta aresta) {
-		if(aresta.a.paiDest.equals(aresta.b.paiDest))
-			return true;
-		return false;
-	}
-
 	/**
 	 * Kruskal algorithm for MST
 	 */
 	public void Kruskal() {
 
 		No ru, rv;
-		for(No node: nodosList)
-			MakeSet(node);
-		for(Aresta edge : arestasList) {					// edges will already be in non-decreasing order
-			ru = Find(edge.originalA);
-			rv = Find(edge.originalB);
+		for(No no: nodosList)
+			MakeSet(no);
+		for(Aresta aresta : arestasList) {					// arestas já estarão em ordem decrescente
+			ru = Buscar(aresta.originalA);
+			rv = Buscar(aresta.originalB);
 			if(!ru.equals(rv)) {
-				mstArvArestasList.add(edge);
-				edge.originalA.mstAresta.add(edge);
-				edge.originalB.mstAresta.add(edge);
+				mstArvArestasList.add(aresta);
+				aresta.originalA.mstAresta.add(aresta);
+				aresta.originalB.mstAresta.add(aresta);
 				Union(ru,rv);
 			}
 		}
@@ -157,25 +99,12 @@ public class Grafo {
 			++ru.rank;
 		}
 	}
-	private No Find(No node) {
-		if(node.mstPai.equals(node))
-			return node;
-		return Find(node.mstPai);
+	private No Buscar(No no) {
+		if(no.mstPai.equals(no))
+			return no;
+		return Buscar(no.mstPai);
 	}
-	private void MakeSet(No node) {
-		node.mstPai = node;
-	}
-
-	/**
-	 * Find the odd degree nodes
-	 * @return
-	 */
-	public List<No> OddDegreeNodes() {
-
-		List<No> oddDegreeNodes = new LinkedList<No>();
-		for(No node : nodosList)
-			if(node.mstAresta.size() % 2 == 1)
-				oddDegreeNodes.add(node);
-		return oddDegreeNodes;
+	private void MakeSet(No no) {
+		no.mstPai = no;
 	}
 }
