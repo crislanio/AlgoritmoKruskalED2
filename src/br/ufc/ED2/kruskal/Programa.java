@@ -1,11 +1,17 @@
-package br.ufc.ED2.grafonaodirecionado;
+package br.ufc.ED2.kruskal;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
 
-public class DriverProgram {
+/**
+ * 
+ * @author 
+ * Driver Program to run the Project
+ *
+ */
+public class Programa {
 
 	/**
 	 * 
@@ -14,19 +20,22 @@ public class DriverProgram {
 	 */
 	public static void main(String[] args) throws IOException {
 
-		OperationFunction of = new OperationFunction();
-		
+		FuncoesExtras of = new FuncoesExtras();
+
 		/**
-		 * Read the input from the file 
+		 * Read the input from the file
 		 */
-		BufferedReader br = new BufferedReader(new FileReader("Ex1.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("Ex3.txt"));
+		
 		String line = null;
 		of.parseFirstLineInput(br.readLine());		// read the first line to set the no of nodes, edges and root node
-		while( (line = br.readLine()) != null) 
+		while( (line = br.readLine()) != null)
 			of.addToGraph(line);
 		br.close();
-		
-		of.root.PrintGraph();
+
+		of.ExecutionFunction();
+
+		//		of.MaximumWeightedMatching();
 
 	}
 
