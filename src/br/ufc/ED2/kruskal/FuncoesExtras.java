@@ -60,7 +60,7 @@ public class FuncoesExtras {
 	
 	public void ExecFunc() {
 
-		 // 1) Kruskal algorithm para encontrar a MST
+		 // 1) Algoritmo de Kruskal para encontrar a MST
 		 
 		Integer custo =0;
 		raiz.Kruskal();						// mstTree contêm as arestas da arv MST

@@ -6,13 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 public class Grafo {
-
+	public List<No> nodosList;
+	public List<Aresta> arestasList;
 	public Integer noDosNodos;
 	public Integer noDasArestas;
 	public Map<Integer, No> nodosHashMap;
-	public List<No> nodosList;
-	public List<Aresta> arestasList;
-
+	
 	public List<Aresta> mstArvArestasList;
 
 	public Grafo() {
@@ -31,9 +30,7 @@ public class Grafo {
 	 * @param no2
 	 * @param peso
 	 */
-	
 	public void addNoEAresta(No no1, No no2, Integer peso) {
-
 		if(nodosHashMap.containsKey(no1.id)) {
 			no1 = nodosHashMap.get(no1.id);
 		} else {
@@ -49,29 +46,13 @@ public class Grafo {
 		}
 
 		Aresta aresta = new Aresta(no1, no2, peso);
-		arestasList.add(aresta);		// add a aresta na lista
+		arestasList.add(aresta);	// add a aresta na lista
 		no1.addNoAdj(aresta);		// add a lista da matriz de adjacencia no no1
 		no2.addNoAdj(aresta);		// adicionar a matriz de lista de adjacência para no2
 	}
 
-	public void RotViavel() {
-		for(No no : nodosList)
-			no.L = 0.0;
-		double max;
-		for(int i=1;i<=2;i++) {
-			for(No no : nodosList) {
-				max = 0;
-				for(Aresta aresta : no.listaArestasAdj) {
-					if(max <= ((double) aresta.peso - aresta.getOutroFim(no).L))
-						max = (double) aresta.peso - aresta.getOutroFim(no).L;
-				}
-
-				no.L = max;
-			}
-		}
-	}
 	/**
-	 * Kruskal algorithm for MST
+	 * Algoritmo de Kruskal 
 	 */
 	public void Kruskal() {
 
@@ -79,12 +60,12 @@ public class Grafo {
 		for(No no: nodosList)
 			MakeSet(no);
 		for(Aresta aresta : arestasList) {					// arestas já estarão em ordem decrescente
-			ru = Buscar(aresta.originalA);
-			rv = Buscar(aresta.originalB);
+			ru = Buscar(aresta.originA);
+			rv = Buscar(aresta.originB);
 			if(!ru.equals(rv)) {
 				mstArvArestasList.add(aresta);
-				aresta.originalA.mstAresta.add(aresta);
-				aresta.originalB.mstAresta.add(aresta);
+				aresta.originA.mstAresta.add(aresta);
+				aresta.originB.mstAresta.add(aresta);
 				Union(ru,rv);
 			}
 		}

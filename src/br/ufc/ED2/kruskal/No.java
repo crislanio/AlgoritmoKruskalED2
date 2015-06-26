@@ -16,12 +16,10 @@ public class No {
 	/**
 	 * Construtor Padrão
 	 */
-	public No() {
+	/*
+	 public No() {
 		listaArestasAdj = new LinkedList<>();
 	}
-
-	/**
-	 * @param id
 	 */
 	public No(Integer id) {
 		this.id = id;
